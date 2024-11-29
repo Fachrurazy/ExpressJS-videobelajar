@@ -8,7 +8,7 @@ dotenv.config();
 const app = express();
 
 app.use(bodyParser.json());
-app.use('/api/users', userRoutes);
+app.use(userRoutes);
 
 const PORT = process.env.PORT || 3000;
 

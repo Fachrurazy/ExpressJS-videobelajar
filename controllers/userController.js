@@ -1,4 +1,7 @@
+const database = require('../config/database');
 const User = require('../models/userModel');
+const bycrypt = require('bcrypt');
+const saltRounds = 10;
 
 exports.getUsers = async (req, res) => {
     try {
@@ -18,3 +21,91 @@ exports.getUsers = async (req, res) => {
     }
 };
 
+exports.getUserById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const result = await User.getUserById(id);
+
+        if (!result) {
+            return res.status(404).json({ 
+                code:404,
+                message: 'User not found',
+                data: null});
+        }
+
+        return res.status(200).json({
+            code:200,
+            message: "Success get user by id",
+            data: result
+        })
+    } catch (err) {
+        res.status(500).json({ 
+            code:500,
+            servermessage: err 
+        });
+    }
+};
+
+exports.createUser = async (req, res) => {
+    try {
+
+        if (!req.body.fullname || !req.body.gender || !req.body.email || !req.body.password || !req.body.role) {
+            return res.status(400).json({ 
+                code:400,
+                message: 'Bad request, all fields are required',
+                data: null});
+        }
+        const { fullname, gender, email, password, role } = req.body;
+        const hashedPassword = await bycrypt.hash(password, saltRounds);
+        const result = await User.addUser(fullname, gender, email, hashedPassword, role);
+        return res.status(201).json({
+            code:201,
+            message: "Success create user"
+        });
+    } catch (err) {
+        res.status(500).json({ 
+            code:500,
+            servermessage: err 
+        });
+    }
+};
+
+exports.updateUser = async (req, res) => {
+    try {
+        if (!req.body.fullname || !req.body.gender || !req.body.email || !req.body.password || !req.body.role) {
+            return res.status(400).json({ 
+                code:400,
+                message: 'Bad request, all fields are required',
+                data: null});
+        }
+        const { id } = req.params;
+        const { fullname, gender, email, password, role } = req.body;
+        const hashedPassword = await bycrypt.hash(password, saltRounds);
+        const result = await User.updateUser(id, fullname, gender, email, hashedPassword, role);
+        return res.status(200).json({
+            code:200,
+            message: "Success update user"
+        });
+    } catch (err) {
+        res.status(500).json({ 
+            code:500,
+            servermessage: err 
+        });
+    }
+};
+
+exports.deleteUser = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const result = await User.deleteUser(id);
+        return res.status(200).json({
+            code:200,
+            message: "Success delete user"
+        });
+    } catch (err) {
+        res.status(500).json({ 
+            code:500,
+            servermessage: err 
+        });
+    }
+};
