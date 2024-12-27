@@ -1,4 +1,4 @@
-const connection = require('../config/database')
+const connection = require('../config/database');
 
 const User = {
     getAllUsers: async () => {
@@ -26,6 +26,6 @@ const User = {
         const result = await connection.query(sqlQuery, [id]);
         return result;
     }
-};
+}
 
 module.exports = User;
