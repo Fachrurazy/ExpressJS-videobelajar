@@ -171,7 +171,7 @@ const UserController = {
             // validation check email
             const user = await User.findOne({ where: { email } });
             if (!user) {
-                return res.status(401).json({ message: 'Invalid email or password' });
+                return res.status(400).json({ message: 'Invalid email or password' });
             }
 
             // validation if user status is PENDING
@@ -182,7 +182,7 @@ const UserController = {
             // validation check password
             const isPasswordValid = await bcrypt.compare(password, user.password);
             if (!isPasswordValid) {
-                return res.status(401).json({ message: 'Invalid email or password' });
+                return res.status(400).json({ message: 'Invalid email or password' });
             }
 
             // Generate JWT token
@@ -206,7 +206,7 @@ const UserController = {
             // Check if token exists di database
             const user = await User.findOne({ where: { token } });
             if (!user) {
-                return res.status(400).json({ message: 'Invalid or expired activation token' });
+                return res.status(403).json({ message: 'Invalid or expired activation token' });
             }
 
             // Update user's status menjadi 'ACTIVE' dan set token menjadi null

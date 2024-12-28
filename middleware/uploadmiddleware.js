@@ -1,4 +1,3 @@
-// Import library yang diperlukan
 const multer = require('multer'); // Library untuk menangani unggahan file
 const path = require('path'); // Library untuk menangani jalur file
 

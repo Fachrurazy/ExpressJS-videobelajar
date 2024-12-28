@@ -18,7 +18,6 @@ const AuthMiddleware = {
                 }
         
                 req.user = user; // Menyimpan informasi pengguna di objek `req` untuk middleware berikutnya
-                console.log(user);
                 next(); // Melanjutkan ke middleware berikutnya
             });
 
