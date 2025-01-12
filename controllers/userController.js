@@ -4,8 +4,8 @@ const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const path = require('path');
 const User = require('../models/userModel');
-const EmailService = require('../service/authservices');
-const generateActivationEmail = require('../template/activationuser');
+const EmailService = require('../service/authServices');
+const generateActivationEmail = require('../template/activationUser');
 require('dotenv').config();
 
 const UserController = {
